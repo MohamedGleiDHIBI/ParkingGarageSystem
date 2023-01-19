@@ -10,5 +10,8 @@
         public string Gender { get; set; }
         public DateTime lastLoginTime { get; set; }
         public DateTime BirthDate { get; set; }
+        public virtual Vehicle Vehicle { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
+        public virtual ICollection<History> Histories { get; set; }
     }
 }
