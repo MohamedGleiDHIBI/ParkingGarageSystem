@@ -10,5 +10,6 @@
         public string Type { get; set; }
         public string Notes { get; set; }
         public string Color { get; set; }
+        public virtual User User { get; set; }
     }
 }
