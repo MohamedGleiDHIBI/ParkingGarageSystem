@@ -10,5 +10,7 @@
         public string PaymentStatus { get; set; }
         public string TransactionId { get; set; }
         public int UserId { get; set; }
+        public virtual Reservation Reservation { get; set; }
+        public virtual User User { get; set; }
     }
 }
