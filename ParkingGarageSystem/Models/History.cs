@@ -8,5 +8,7 @@
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public decimal Cost { get; set; }
+        public virtual User User { get; set; }
+        public virtual Location Location { get; set; }
     }
 }
