@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ParkingGarageSystem.Models;
 
 namespace ParkingGarageSystem.Infrastructure
@@ -84,7 +85,10 @@ namespace ParkingGarageSystem.Infrastructure
                 .HasOne(v => v.User)
                 .WithOne(u => u.Vehicle)
                 .HasForeignKey<Vehicle>(v => v.UserId);
-
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Reservation)
+                .WithOne(r => r.Payment)
+                .HasForeignKey<Payment>(p => p.ReservationId);
         }
     }
     /*
