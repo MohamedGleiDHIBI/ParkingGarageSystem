@@ -11,5 +11,8 @@
         public DateTime CancellationDate { get; set; }
         public string CancellationReason { get; set; }
         public decimal TotalCost { get; set; }
+        public virtual User User { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Payment Payment { get; set; }
     }
 }
