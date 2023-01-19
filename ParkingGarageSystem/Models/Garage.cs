@@ -12,5 +12,6 @@
         public bool Accessibility { get; set; }
         public string Photos { get; set; }
         public string Description { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
     }
 }
