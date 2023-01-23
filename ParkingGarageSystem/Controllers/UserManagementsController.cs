@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using ParkingGarageSystem.Interfaces;
 using ParkingGarageSystem.Models;
 using ParkingGarageSystem.ViewModels;
@@ -51,7 +52,7 @@ namespace ParkingGarageSystem.Controllers
             var user = await _UserManagements.GetUserByEmail(loginModel.Email);
             if (user == null)
             {
-                return BadRequest("Sorry, we couldn't find a user with that username. Please double-check the username and try again, or create a new account");
+                return NotFound("Sorry, we couldn't find a user with that username. Please double-check the username and try again, or create a new account");
             }
             if (new PasswordHasher<object?>().VerifyHashedPassword(null, user.Password, loginModel.Password) ==PasswordVerificationResult.Failed)
             {
@@ -82,14 +83,14 @@ namespace ParkingGarageSystem.Controllers
             var user = await _UserManagements.GetUserById(userId);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("Sorry, we couldn't find a user with that username. Please double-check the username and try again, or create a new account");
             }
 
-            if (user.Password != model.CurrentPassword)
+            if (new PasswordHasher<object?>().VerifyHashedPassword(null, user.Password, model.CurrentPassword) == PasswordVerificationResult.Failed)
             {
-                return BadRequest("Invalid current password.");
+                return BadRequest("The current password you entered is incorrect. Please double-check and try again.");
             }
-
+            user.Password = new PasswordHasher<object?>().HashPassword(user, model.NewPassword);
             var result = await _UserManagements.UpdateUser(user);
             if (result)
             {
