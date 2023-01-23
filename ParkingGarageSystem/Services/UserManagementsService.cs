@@ -31,5 +31,24 @@ namespace ParkingGarageSystem.Services
         {
             return await _ParkingSystemDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task<User> GetUserById(int userId)
+        {
+            return await _ParkingSystemDbContext.Users.FindAsync(userId);
+        }
+
+        public async Task<bool> UpdateUser(User user)
+        {
+            try
+            {
+                _ParkingSystemDbContext.Users.Update(user);
+                await _ParkingSystemDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

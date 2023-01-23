@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ParkingGarageSystem.Interfaces;
@@ -48,6 +49,43 @@ namespace ParkingGarageSystem.Controllers
             }
 
             return Ok();
+        }
+        [Authorize]
+        [HttpGet]
+        [Route("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var userId = int.Parse(User.Identity.Name);
+            var user = await _UserManagements.GetUserById(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+        [Authorize]
+        [HttpPut]
+        [Route("changepassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
+        {
+            var userId = int.Parse(User.Identity.Name);
+            var user = await _UserManagements.GetUserById(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.Password != model.CurrentPassword)
+            {
+                return BadRequest("Invalid current password.");
+            }
+
+            var result = await _UserManagements.UpdateUser(user);
+            if (result)
+            {
+                return Ok();
+            }
+            return BadRequest("An error occurred while changing the password.");
         }
     }
 }
