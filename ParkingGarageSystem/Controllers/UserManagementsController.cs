@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ParkingGarageSystem.Interfaces;
 using ParkingGarageSystem.Models;
+using ParkingGarageSystem.ViewModels;
 
 namespace ParkingGarageSystem.Controllers
 {
@@ -12,26 +14,34 @@ namespace ParkingGarageSystem.Controllers
     public class UserManagementsController : ControllerBase
     {
         private readonly IUserManagements _UserManagements;
-        public UserManagementsController(IUserManagements userManagements)
+        private readonly IMapper _Mapper;
+        public UserManagementsController(IUserManagements userManagements, IMapper Mapper)
         {
             _UserManagements = userManagements;
+            _Mapper = Mapper;
         }
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] User user)
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel registerView)
         {
-            var existingUser = await _UserManagements.GetUserByEmail(user.Email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var user = _Mapper.Map<User>(registerView);
+            var existingUser = await _UserManagements.GetUserByEmail(registerView.Email);
             if (existingUser != null)
             {
                 return BadRequest("User already exists");
             }
-
+            user.Password = new PasswordHasher<object?>().HashPassword(user, registerView.Password);
             var result = await _UserManagements.CreateUser(user);
-            if (result)
+            if (!result)
             {
-                return Ok();
+                return BadRequest(new { message = "An error occurred while creating the user" });
             }
-            return BadRequest();
+            return Ok();
         }
 
         [HttpPost]
@@ -41,11 +51,11 @@ namespace ParkingGarageSystem.Controllers
             var user = await _UserManagements.GetUserByEmail(loginModel.Email);
             if (user == null)
             {
-                return BadRequest("Invalid login attempt.");
+                return BadRequest("Sorry, we couldn't find a user with that username. Please double-check the username and try again, or create a new account");
             }
-            if (user.Password != loginModel.Password)
+            if (new PasswordHasher<object?>().VerifyHashedPassword(null, user.Password, loginModel.Password) ==PasswordVerificationResult.Failed)
             {
-                return BadRequest("Invalid login attempt.");
+                return BadRequest("The password you entered is incorrect. Please try again or reset your password.");
             }
 
             return Ok();
