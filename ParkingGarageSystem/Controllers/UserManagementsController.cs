@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ParkingGarageSystem.Interfaces;
 using ParkingGarageSystem.Models;
@@ -30,6 +31,23 @@ namespace ParkingGarageSystem.Controllers
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
+        {
+            var user = await _UserManagements.GetUserByEmail(loginModel.Email);
+            if (user == null)
+            {
+                return BadRequest("Invalid login attempt.");
+            }
+            if (user.Password != loginModel.Password)
+            {
+                return BadRequest("Invalid login attempt.");
+            }
+
+            return Ok();
         }
     }
 }
