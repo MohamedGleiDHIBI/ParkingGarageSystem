@@ -87,5 +87,18 @@ namespace ParkingGarageSystem.Controllers
             }
             return BadRequest("An error occurred while changing the password.");
         }
+        [Authorize]
+        [HttpDelete]
+        [Route("delete")]
+        public async Task<IActionResult> DeleteUser()
+        {
+            var userId = int.Parse(User.Identity.Name);
+            var result = await _UserManagements.DeleteUser(userId);
+            if (result)
+            {
+                return Ok();
+            }
+            return BadRequest("An error occurred while deleting the user.");
+        }
     }
 }

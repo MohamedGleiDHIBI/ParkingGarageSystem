@@ -8,5 +8,6 @@ namespace ParkingGarageSystem.Interfaces
         Task<User> GetUserByEmail(string email);
         Task<User> GetUserById(int userId);
         Task<bool> UpdateUser(User user);
+        Task<bool> DeleteUser(int id);
     }
 }
