@@ -100,5 +100,13 @@ namespace ParkingGarageSystem.Controllers
             }
             return BadRequest("An error occurred while deleting the user.");
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("list")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _UserManagements.GetUsers();
+            return Ok(users);
+        }
     }
 }

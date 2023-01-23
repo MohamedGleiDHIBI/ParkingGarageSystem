@@ -50,6 +50,7 @@ namespace ParkingGarageSystem.Services
                 return false;
             }
         }
+
         public async Task<bool> DeleteUser(int id)
         {
             var user = await _ParkingSystemDbContext.Users.FindAsync(id);
@@ -60,6 +61,11 @@ namespace ParkingGarageSystem.Services
             _ParkingSystemDbContext.Users.Remove(user);
             await _ParkingSystemDbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<User>> GetUsers()
+        {
+            return await _ParkingSystemDbContext.Users.ToListAsync();
         }
     }
 }
