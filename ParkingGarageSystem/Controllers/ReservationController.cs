@@ -48,5 +48,12 @@ namespace ParkingGarageSystem.Controllers
 
             return Ok(reservation);
         }
+
+        [HttpGet("date-range")]
+        public ActionResult<List<Reservation>> GetReservationsByDateRange(DateTime startDate, DateTime endDate)
+        {
+            var reservations = _Reservation.GetReservationsByDateRange(startDate, endDate);
+            return Ok(reservations);
+        }
     }
 }

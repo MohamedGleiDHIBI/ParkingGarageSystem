@@ -24,5 +24,10 @@ namespace ParkingGarageSystem.Services
         {
             return await _ParkingSystemDbContext.Reservations.FindAsync(id);
         }
+
+        public async Task<List<Reservation>> GetReservationsByDateRange(DateTime startDate, DateTime endDate)
+        {
+            return await _ParkingSystemDbContext.Reservations.Where(r => r.StartTime >= startDate && r.EndTime <= endDate).ToListAsync();
+        }
     }
 }
