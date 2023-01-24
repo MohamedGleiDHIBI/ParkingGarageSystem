@@ -44,7 +44,8 @@ namespace ParkingGarageSystem.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     lastLoginTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsValidated = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

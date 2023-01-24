@@ -12,8 +12,8 @@ using ParkingGarageSystem.Infrastructure;
 namespace ParkingGarageSystem.Migrations
 {
     [DbContext(typeof(ParkingSystemDbContext))]
-    [Migration("20230119162128_CreateEntities")]
-    partial class CreateEntities
+    [Migration("20230124145529_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,6 +228,9 @@ namespace ParkingGarageSystem.Migrations
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsValidated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .IsRequired()

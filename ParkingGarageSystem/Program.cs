@@ -22,6 +22,7 @@ namespace ParkingGarageSystem
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IUserManagements, UserManagementsService>();
+            builder.Services.AddScoped<IReservation, ReservationService>();
             builder.Services.AddDbContext<ParkingSystemDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
