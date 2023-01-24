@@ -10,5 +10,6 @@ namespace ParkingGarageSystem.Interfaces
         Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(int id);
         Task<List<User>> GetUsers();
+        Task<bool> Validate(string email, string token);
     }
 }

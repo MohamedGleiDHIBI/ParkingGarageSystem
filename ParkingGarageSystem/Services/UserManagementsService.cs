@@ -67,5 +67,10 @@ namespace ParkingGarageSystem.Services
         {
             return await _ParkingSystemDbContext.Users.ToListAsync();
         }
+
+        public Task<bool> Validate(string email, string token)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

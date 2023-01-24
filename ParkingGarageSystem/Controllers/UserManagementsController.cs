@@ -61,6 +61,22 @@ namespace ParkingGarageSystem.Controllers
 
             return Ok();
         }
+        
+        [HttpPost]
+        [Route("validate")]
+        public async Task<IActionResult> Validate([FromBody] ValidateModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _UserManagements.Validate(model.Email, model.Token);
+            if (!result)
+            {
+                return BadRequest(new { message = "Invalid token or email" });
+            }
+            return Ok();
+        }
         [Authorize]
         [HttpGet]
         [Route("profile")]
