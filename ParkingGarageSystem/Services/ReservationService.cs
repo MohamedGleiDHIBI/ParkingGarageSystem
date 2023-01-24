@@ -7,7 +7,7 @@ namespace ParkingGarageSystem.Services
 {
     public class ReservationService : IReservation
     {
-        public readonly ParkingSystemDbContext _ParkingSystemDbContext;
+        private readonly ParkingSystemDbContext _ParkingSystemDbContext;
         public ReservationService(ParkingSystemDbContext ParkingSystemDbContext)
         {
             _ParkingSystemDbContext = ParkingSystemDbContext;
