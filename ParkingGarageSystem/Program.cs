@@ -1,3 +1,12 @@
+using Microsoft.Extensions.Configuration;
+using ParkingGarageSystem.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using ParkingGarageSystem.Interfaces;
+using ParkingGarageSystem.Services;
+using AutoMapper;
+using ParkingGarageSystem.ViewModels;
+using ParkingGarageSystem.Models;
+
 namespace ParkingGarageSystem
 {
     public class Program
@@ -12,7 +21,17 @@ namespace ParkingGarageSystem
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddScoped<IUserManagements, UserManagementsService>();
+            builder.Services.AddDbContext<ParkingSystemDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<RegisterViewModel, User>();
+            });
+            var mapper = config.CreateMapper();
+            builder.Services.AddSingleton(mapper);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
