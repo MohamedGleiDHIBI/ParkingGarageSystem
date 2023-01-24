@@ -77,7 +77,6 @@ namespace ParkingGarageSystem.Controllers
             }
             return Ok();
         }
-        [Authorize]
         [HttpGet]
         [Route("profile")]
         public async Task<IActionResult> GetProfile()
@@ -90,7 +89,6 @@ namespace ParkingGarageSystem.Controllers
             }
             return Ok(user);
         }
-        [Authorize]
         [HttpPut]
         [Route("changepassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
@@ -114,7 +112,6 @@ namespace ParkingGarageSystem.Controllers
             }
             return BadRequest("An error occurred while changing the password.");
         }
-        [Authorize]
         [HttpDelete]
         [Route("delete")]
         public async Task<IActionResult> DeleteUser()
@@ -127,7 +124,6 @@ namespace ParkingGarageSystem.Controllers
             }
             return BadRequest("An error occurred while deleting the user.");
         }
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("list")]
         public async Task<IActionResult> GetUsers()
