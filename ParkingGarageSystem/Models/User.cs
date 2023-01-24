@@ -13,5 +13,6 @@
         public virtual Vehicle Vehicle { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
         public virtual ICollection<History> Histories { get; set; }
+        public bool IsValidated { get; set; }
     }
 }
