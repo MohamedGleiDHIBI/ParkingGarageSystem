@@ -55,5 +55,17 @@ namespace ParkingGarageSystem.Controllers
             var reservations = _Reservation.GetReservationsByDateRange(startDate, endDate);
             return Ok(reservations);
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult<Reservation> CancelReservation(int id)
+        {
+            var canceledReservation = _Reservation.CancelReservation(id);
+            if (canceledReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(canceledReservation);
+        }
     }
 }

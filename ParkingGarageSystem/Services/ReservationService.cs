@@ -13,6 +13,19 @@ namespace ParkingGarageSystem.Services
             _ParkingSystemDbContext = ParkingSystemDbContext;
         }
 
+        public async Task<Reservation> CancelReservation(int id)
+        {
+            var reservationToCancel = _ParkingSystemDbContext.Reservations.Find(id);
+            if (reservationToCancel == null)
+            {
+                return null;
+            }
+
+            reservationToCancel.CancellationDate = DateTime.Now;
+             await _ParkingSystemDbContext.SaveChangesAsync();
+            return reservationToCancel;
+        }
+
         public async Task<Reservation> CreateReservation(Reservation reservation)
         {
             _ParkingSystemDbContext.Reservations.Add(reservation);
