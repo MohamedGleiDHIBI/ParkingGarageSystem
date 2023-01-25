@@ -12,6 +12,12 @@ namespace ParkingGarageSystem.Services
             _ParkingSystemDbContext = parkingSystemDbContext;
         }
 
+        public async Task AddVehicle(Vehicle vehicle)
+        {
+            _ParkingSystemDbContext.Vehicles.Add(vehicle);
+            await _ParkingSystemDbContext.SaveChangesAsync();
+        }
+
         public async Task<Vehicle> GetVehicle(int id)
         {
             return await _ParkingSystemDbContext.Vehicles.FindAsync(id);

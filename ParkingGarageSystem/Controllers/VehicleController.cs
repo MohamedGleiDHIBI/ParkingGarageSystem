@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkingGarageSystem.Interfaces;
+using ParkingGarageSystem.Models;
 using ParkingGarageSystem.Services;
 
 namespace ParkingGarageSystem.Controllers
@@ -22,6 +23,17 @@ namespace ParkingGarageSystem.Controllers
                 return NotFound();
 
             return Ok(vehicle);
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> AddVehicle([FromBody] Vehicle vehicle)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _Vehicle.AddVehicle(vehicle);
+            return Ok();
         }
     }
 }

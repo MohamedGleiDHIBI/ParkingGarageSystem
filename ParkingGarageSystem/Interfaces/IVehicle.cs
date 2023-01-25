@@ -5,5 +5,6 @@ namespace ParkingGarageSystem.Interfaces
     public interface IVehicle
     {
         Task<Vehicle> GetVehicle(int id);
+        Task AddVehicle(Vehicle vehicle);
     }
 }
