@@ -1,4 +1,5 @@
-﻿using ParkingGarageSystem.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using ParkingGarageSystem.Infrastructure;
 using ParkingGarageSystem.Interfaces;
 using ParkingGarageSystem.Models;
 
@@ -21,6 +22,24 @@ namespace ParkingGarageSystem.Services
         public async Task<Vehicle> GetVehicle(int id)
         {
             return await _ParkingSystemDbContext.Vehicles.FindAsync(id);
+        }
+
+        public async Task<Vehicle> UpdateVehicle(int id, Vehicle vehicle)
+        {
+            var existingVehicle = await _ParkingSystemDbContext.Vehicles.FindAsync(id);
+            if (existingVehicle == null)
+                return null;
+
+            existingVehicle.Make = vehicle.Make;
+            existingVehicle.Model = vehicle.Model;
+            existingVehicle.LicensePlate = vehicle.LicensePlate;
+            existingVehicle.Type = vehicle.Type;
+            existingVehicle.Notes = vehicle.Notes;
+            existingVehicle.Color = vehicle.Color;
+
+            _ParkingSystemDbContext.Vehicles.Update(existingVehicle);
+            await _ParkingSystemDbContext.SaveChangesAsync();
+            return existingVehicle;
         }
     }
 }

@@ -35,5 +35,17 @@ namespace ParkingGarageSystem.Controllers
             await _Vehicle.AddVehicle(vehicle);
             return Ok();
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] Vehicle vehicle)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _Vehicle.UpdateVehicle(id, vehicle);
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
     }
 }
