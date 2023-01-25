@@ -19,6 +19,18 @@ namespace ParkingGarageSystem.Services
             await _ParkingSystemDbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> DeleteVehicle(int id)
+        {
+            var vehicle = await _ParkingSystemDbContext.Vehicles.FindAsync(id);
+            if (vehicle == null)
+            {
+                return false;
+            }
+            _ParkingSystemDbContext.Vehicles.Remove(vehicle);
+            await _ParkingSystemDbContext.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<Vehicle> GetVehicle(int id)
         {
             return await _ParkingSystemDbContext.Vehicles.FindAsync(id);

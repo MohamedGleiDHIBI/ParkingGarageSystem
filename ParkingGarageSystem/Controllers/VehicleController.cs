@@ -47,5 +47,15 @@ namespace ParkingGarageSystem.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteVehicle(int id)
+        {
+            var result = await _Vehicle.DeleteVehicle(id);
+            if (result == false)
+                return NotFound();
+
+            return NoContent();
+        }
     }
 }
