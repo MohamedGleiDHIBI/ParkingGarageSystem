@@ -31,8 +31,17 @@ namespace ParkingGarageSystem.Services
 
         public async Task UpdateHistory(History history)
         {
-            _ParkingSystemDbContext.Histories.Update(history);
-            await _ParkingSystemDbContext.SaveChangesAsync();
+            var historyupdate = _ParkingSystemDbContext.Histories.FirstOrDefault(g=>g.Id == history.Id);
+            if(historyupdate != null)
+            {
+                _ParkingSystemDbContext.Histories.Attach(historyupdate);
+                historyupdate.StartTime = history.StartTime;
+                historyupdate.EndTime = history.EndTime;
+                historyupdate.Cost = history.Cost;
+                historyupdate.LocationId = history.LocationId;
+                historyupdate.UserId = history.UserId;
+                await _ParkingSystemDbContext.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteHistory(int id)

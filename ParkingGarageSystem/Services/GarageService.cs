@@ -27,10 +27,22 @@ namespace ParkingGarageSystem.Services
             _ParkingSystemDbContext.Garages.Add(garage);
             await _ParkingSystemDbContext.SaveChangesAsync();
         }
-        public async Task UpdateGarage(Garage garage)
+        public async Task UpdateGarage(Garage ToUpdatedGarage)
         {
-            _ParkingSystemDbContext.Garages.Update(garage);
-            await _ParkingSystemDbContext.SaveChangesAsync();
+            var garage = _ParkingSystemDbContext.Garages.FirstOrDefault(g => g.Id == ToUpdatedGarage.Id);
+            if (garage != null)
+            {
+                _ParkingSystemDbContext.Garages.Attach(garage);
+                garage.Name = ToUpdatedGarage.Name;
+                garage.TotalSpots = ToUpdatedGarage.TotalSpots;
+                garage.Address = ToUpdatedGarage.Address;
+                garage.OperatingHours = ToUpdatedGarage.OperatingHours;
+                garage.Security = ToUpdatedGarage.Security;
+                garage.Accessibility = ToUpdatedGarage.Accessibility;
+                garage.Description = ToUpdatedGarage.Description;
+                garage.Photos = ToUpdatedGarage.Photos;
+                await _ParkingSystemDbContext.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteGarage(int id)

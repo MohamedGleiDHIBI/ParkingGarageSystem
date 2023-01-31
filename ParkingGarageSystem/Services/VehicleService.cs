@@ -38,19 +38,18 @@ namespace ParkingGarageSystem.Services
 
         public async Task<Vehicle> UpdateVehicle(int id, Vehicle vehicle)
         {
-            var existingVehicle = await _ParkingSystemDbContext.Vehicles.FindAsync(id);
-            if (existingVehicle == null)
-                return null;
-
-            existingVehicle.Make = vehicle.Make;
-            existingVehicle.Model = vehicle.Model;
-            existingVehicle.LicensePlate = vehicle.LicensePlate;
-            existingVehicle.Type = vehicle.Type;
-            existingVehicle.Notes = vehicle.Notes;
-            existingVehicle.Color = vehicle.Color;
-
-            _ParkingSystemDbContext.Vehicles.Update(existingVehicle);
-            await _ParkingSystemDbContext.SaveChangesAsync();
+            var existingVehicle = _ParkingSystemDbContext.Vehicles.FirstOrDefault(v=>v.Id ==vehicle.Id);
+            if (existingVehicle != null)
+            {
+                _ParkingSystemDbContext.Vehicles.Attach(existingVehicle);
+                existingVehicle.Make = vehicle.Make;
+                existingVehicle.Model = vehicle.Model;
+                existingVehicle.LicensePlate = vehicle.LicensePlate;
+                existingVehicle.Type = vehicle.Type;
+                existingVehicle.Notes = vehicle.Notes;
+                existingVehicle.Color = vehicle.Color;
+                await _ParkingSystemDbContext.SaveChangesAsync();
+            }
             return existingVehicle;
         }
     }
