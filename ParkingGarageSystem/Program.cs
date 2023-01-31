@@ -9,6 +9,7 @@ using ParkingGarageSystem.ViewModels.Garage;
 using ParkingGarageSystem.ViewModels.Vehicle;
 using ParkingGarageSystem.ViewModels.LocationView;
 using ParkingGarageSystem.ViewModels.User;
+using ParkingGarageSystem.ViewModels.History;
 
 namespace ParkingGarageSystem
 {
@@ -40,6 +41,7 @@ namespace ParkingGarageSystem
                 cfg.CreateMap<AddGarageViewModel,Garage>().ForMember(g=>g.Id,opt=>opt.Ignore());
                 cfg.CreateMap<VehicleViewModel, Vehicle>();
                 cfg.CreateMap<LocationModelView,Location>();
+                cfg.CreateMap<HistoryModelView,History>();
             });
             var mapper = config.CreateMapper();
             builder.Services.AddSingleton(mapper);
