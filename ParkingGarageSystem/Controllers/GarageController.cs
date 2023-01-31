@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
+using Microsoft.Win32;
 using ParkingGarageSystem.Interfaces;
 using ParkingGarageSystem.Models;
 using ParkingGarageSystem.Services;
+using ParkingGarageSystem.ViewModels.Garage;
 
 namespace ParkingGarageSystem.Controllers
 {
@@ -11,9 +15,11 @@ namespace ParkingGarageSystem.Controllers
     public class GarageController : ControllerBase
     {
         private readonly IGarage _Garage;
-        public GarageController(IGarage Garage)
+        private readonly IMapper _Mapper;
+        public GarageController(IGarage Garage, IMapper mapper)
         {
             _Garage = Garage;
+            _Mapper = mapper;
         }
         
         [HttpGet]
@@ -35,21 +41,34 @@ namespace ParkingGarageSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddGarage([FromBody] Garage garage)
+        public async Task<IActionResult> AddGarage([FromBody] AddGarageViewModel garageViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var garage = _Mapper.Map<Garage>(garageViewModel);
             await _Garage.AddGarage(garage);
             return CreatedAtAction(nameof(GetGarageById), new { id = garage.Id }, garage);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGarage(int id, [FromBody] Garage garage)
+        public async Task<IActionResult> UpdateGarage(int id, [FromBody] AddGarageViewModel garageViewModel)
         {
-            if (id != garage.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
+            var garageById= await _Garage.GetGarageById(id);
+
+            if(garageById == null)
+                return BadRequest(new { message = "Invalid garage ID. The entered ID does not match any existing garage. Please double check and try again" });
+
+            var garage = _Mapper.Map<Garage>(garageViewModel);
+            garage.Id = id;
             await _Garage.UpdateGarage(garage);
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]

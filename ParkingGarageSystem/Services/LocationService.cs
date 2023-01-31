@@ -38,8 +38,15 @@ namespace ParkingGarageSystem.Services
 
         public async Task UpdateLocation(Location location)
         {
-            _ParkingSystemDbContext.Locations.Update(location);
-            await _ParkingSystemDbContext.SaveChangesAsync();
+            var locationUpdate = _ParkingSystemDbContext.Locations.FirstOrDefault(g => g.Id == location.Id);
+            if (locationUpdate != null)
+            {
+                _ParkingSystemDbContext.Locations.Attach(locationUpdate);
+                locationUpdate.Name = location.Name;
+                locationUpdate.IsAvailable = location.IsAvailable;
+                locationUpdate.GarageId = location.GarageId;
+                await _ParkingSystemDbContext.SaveChangesAsync();
+            }
         }
     }
 }

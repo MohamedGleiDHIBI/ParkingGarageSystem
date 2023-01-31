@@ -4,8 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using ParkingGarageSystem.Interfaces;
 using ParkingGarageSystem.Services;
 using AutoMapper;
-using ParkingGarageSystem.ViewModels;
 using ParkingGarageSystem.Models;
+using ParkingGarageSystem.ViewModels.Garage;
+using ParkingGarageSystem.ViewModels.Vehicle;
+using ParkingGarageSystem.ViewModels.LocationView;
+using ParkingGarageSystem.ViewModels.User;
 
 namespace ParkingGarageSystem
 {
@@ -23,6 +26,10 @@ namespace ParkingGarageSystem
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IUserManagements, UserManagementsService>();
             builder.Services.AddScoped<IReservation, ReservationService>();
+            builder.Services.AddScoped<IGarage, GarageService>();
+            builder.Services.AddScoped<IHistory, HistoryService>();
+            builder.Services.AddScoped<ILocation, LocationService>();
+            builder.Services.AddScoped<IVehicle, VehicleService>();
             builder.Services.AddDbContext<ParkingSystemDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -30,6 +37,9 @@ namespace ParkingGarageSystem
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<RegisterViewModel, User>();
+                cfg.CreateMap<AddGarageViewModel,Garage>().ForMember(g=>g.Id,opt=>opt.Ignore());
+                cfg.CreateMap<VehicleViewModel, Vehicle>();
+                cfg.CreateMap<LocationModelView,Location>();
             });
             var mapper = config.CreateMapper();
             builder.Services.AddSingleton(mapper);

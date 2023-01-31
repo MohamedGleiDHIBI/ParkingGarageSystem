@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ParkingGarageSystem.ViewModels
+namespace ParkingGarageSystem.ViewModels.User
 {
     public class ChangePasswordModel
     {

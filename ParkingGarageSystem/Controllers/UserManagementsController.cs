@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
 using ParkingGarageSystem.Interfaces;
 using ParkingGarageSystem.Models;
-using ParkingGarageSystem.ViewModels;
+using ParkingGarageSystem.ViewModels.User;
 
 namespace ParkingGarageSystem.Controllers
 {
